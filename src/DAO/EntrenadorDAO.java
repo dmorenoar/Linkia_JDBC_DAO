@@ -14,6 +14,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -72,6 +73,31 @@ public class EntrenadorDAO implements IEntrenadorDAO {
         }
 
         return existe;
+    }
+
+    @Override
+    public ArrayList<Entrenador> getAllEntrenadores() throws SQLException {
+        
+        ArrayList<Entrenador> listEntrenadores = new ArrayList<>();
+        
+        String select = "Select * from Entrenador";
+        Statement st = GestionDAO.conexion.createStatement();
+        
+        ResultSet rs = st.executeQuery(select);
+        
+        while(rs.next()){
+            
+            Entrenador e = new Entrenador();
+            e.setNombre(rs.getString("nombre"));
+            e.setTelefono(rs.getString("telefono"));     
+            listEntrenadores.add(e);
+            
+        }
+        
+        rs.close();
+        st.close();
+        
+        return listEntrenadores;
     }
 
 }
